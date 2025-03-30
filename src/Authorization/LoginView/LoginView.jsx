@@ -6,7 +6,7 @@ import {
     registerWithEmailAndPassword,
 } from "../../Firebase";
 // IMAGES
-import publicLogo from "../../assets/images/public.png";
+import publicLogo from "../../assets/images/thumbnail_internx.png";
 import { useNavigate } from "react-router";
 import "./LoginView.css";
 import { useEffect, useState } from "react";
