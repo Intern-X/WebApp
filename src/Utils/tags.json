@@ -1,0 +1,357 @@
+{
+    "tags" : [
+        {
+            "value": "Biopharmaceuticals",
+            "label": "Biopharmaceuticals"
+        },
+        {
+            "value": "Biotech",
+            "label": "Biotech"
+        },
+        {
+            "value": "Blockchain Integration",
+            "label": "Blockchain Integration"
+        },
+        {
+            "value": "Brand Positioning",
+            "label": "Brand Positioning"
+        },
+        {
+            "value": "Business Analysis",
+            "label": "Business Analysis"
+        },
+        {
+            "value": "Business Writing",
+            "label": "Business Writing"
+        },
+        {
+            "value": "Cloud",
+            "label": "Cloud"
+        },
+        {
+            "value": "Communication Skills",
+            "label": "Communication Skills"
+        },
+        {
+            "value": "Community",
+            "label": "Community"
+        },
+        {
+            "value": "Compliance",
+            "label": "Compliance"
+        },
+        {
+            "value": "Computer Architecture",
+            "label": "Computer Architecture"
+        },
+        {
+            "value": "Computing Advancements",
+            "label": "Computing Advancements"
+        },
+        {
+            "value": "Connectivity",
+            "label": "Connectivity"
+        },
+        {
+            "value": "Consulting",
+            "label": "Consulting"
+        },
+        {
+            "value": "Consumer",
+            "label": "Consumer"
+        },
+        {
+            "value": "Content Creation",
+            "label": "Content Creation"
+        },
+        {
+            "value": "Corporate",
+            "label": "Corporate"
+        },
+        {
+            "value": "Creative Arts",
+            "label": "Creative Arts"
+        },
+        {
+            "value": "DataAnalysis",
+            "label": "DataAnalysis"
+        },
+        {
+            "value": "Database",
+            "label": "Database"
+        },
+        {
+            "value": "Design Enhancements",
+            "label": "Design Enhancements"
+        },
+        {
+            "value": "Design Improvements",
+            "label": "Design Improvements"
+        },
+        {
+            "value": "DevOps",
+            "label": "DevOps"
+        },
+        {
+            "value": "Diversity And Inclusion",
+            "label": "Diversity And Inclusion"
+        },
+        {
+            "value": "Ecommerce",
+            "label": "Ecommerce"
+        },
+        {
+            "value": "Education",
+            "label": "Education"
+        },
+        {
+            "value": "Efficiency",
+            "label": "Efficiency"
+        },
+        {
+            "value": "HumanResources",
+            "label": "HumanResources"
+        },
+        {
+            "value": "Engagement",
+            "label": "Engagement"
+        },
+        {
+            "value": "Engineering",
+            "label": "Engineering"
+        },
+        {
+            "value": "Entrepreneurship",
+            "label": "Entrepreneurship"
+        },
+        {
+            "value": "Environmental",
+            "label": "Environmental"
+        },
+        {
+            "value": "Finance",
+            "label": "Finance"
+        },
+        {
+            "value": "Forecasting",
+            "label": "Forecasting"
+        },
+        {
+            "value": "Frontend",
+            "label": "Frontend"
+        },
+        {
+            "value": "Game",
+            "label": "Game"
+        },
+        {
+            "value": "Healthcare",
+            "label": "Healthcare"
+        },
+        {
+            "value": "Inclusivity",
+            "label": "Inclusivity"
+        },
+        {
+            "value": "Innovation",
+            "label": "Innovation"
+        },
+        {
+            "value": "International",
+            "label": "International"
+        },
+        {
+            "value": "Language",
+            "label": "Language"
+        },
+        {
+            "value": "Leadership",
+            "label": "Leadership"
+        },
+        {
+            "value": "MachineLearning",
+            "label": "MachineLearning"
+        },
+        {
+            "value": "Marketing",
+            "label": "Marketing"
+        },
+        {
+            "value": "Media",
+            "label": "Media"
+        },
+        {
+            "value": "Medical Outreach",
+            "label": "Medical Outreach"
+        },
+        {
+            "value": "Membership",
+            "label": "Membership"
+        },
+        {
+            "value": "Mobile",
+            "label": "Mobile"
+        },
+        {
+            "value": "Modernization",
+            "label": "Modernization"
+        },
+        {
+            "value": "Navigation",
+            "label": "Navigation"
+        },
+        {
+            "value": "Networking",
+            "label": "Networking"
+        },
+        {
+            "value": "Online Retail",
+            "label": "Online Retail"
+        },
+        {
+            "value": "Optimization",
+            "label": "Optimization"
+        },
+        {
+            "value": "Personalization",
+            "label": "Personalization"
+        },
+        {
+            "value": "Pharmaceutical",
+            "label": "Pharmaceutical"
+        },
+        {
+            "value": "Philanthropy",
+            "label": "Philanthropy"
+        },
+        {
+            "value": "Portfolio Management",
+            "label": "Portfolio Management"
+        },
+        {
+            "value": "Portfolio Optimization",
+            "label": "Portfolio Optimization"
+        },
+        {
+            "value": "PowerBI",
+            "label": "PowerBI"
+        },
+        {
+            "value": "Process Optimization",
+            "label": "Process Optimization"
+        },
+        {
+            "value": "Product Innovation",
+            "label": "Product Innovation"
+        },
+        {
+            "value": "Professional",
+            "label": "Professional"
+        },
+        {
+            "value": "Proj Management",
+            "label": "Proj Management"
+        },
+        {
+            "value": "Prototyping",
+            "label": "Prototyping"
+        },
+        {
+            "value": "Python",
+            "label": "Python"
+        },
+        {
+            "value": "Quantitative Analysis",
+            "label": "Quantitative Analysis"
+        },
+        {
+            "value": "Research",
+            "label": "Research"
+        },
+        {
+            "value": "Retail",
+            "label": "Retail"
+        },
+        {
+            "value": "Risk Management",
+            "label": "Risk Management"
+        },
+        {
+            "value": "Security",
+            "label": "Security"
+        },
+        {
+            "value": "Social Media",
+            "label": "Social Media"
+        },
+        {
+            "value": "Software",
+            "label": "Software"
+        },
+        {
+            "value": "Statistics",
+            "label": "Statistics"
+        },
+        {
+            "value": "Strategy",
+            "label": "Strategy"
+        },
+        {
+            "value": "Sustainability",
+            "label": "Sustainability"
+        },
+        {
+            "value": "Tableau",
+            "label": "Tableau"
+        },
+        {
+            "value": "Technology Education",
+            "label": "Technology Education"
+        },
+        {
+            "value": "Telecommunications",
+            "label": "Telecommunications"
+        },
+        {
+            "value": "Training",
+            "label": "Training"
+        },
+        {
+            "value": "Transportation",
+            "label": "Transportation"
+        },
+        {
+            "value": "Travel Exploration",
+            "label": "Travel Exploration"
+        },
+        {
+            "value": "UIUX",
+            "label": "UIUX"
+        },
+        {
+            "value": "WebDev",
+            "label": "WebDev"
+        },
+        {
+            "value": "Wellbeing",
+            "label": "Wellbeing"
+        },
+        {
+            "value": "WordPress",
+            "label": "WordPress"
+        },
+        {
+            "value": "Ethics",
+            "label": "Ethics"
+        },
+        {
+            "value": "Writing",
+            "label": "Writing"
+        },
+        {
+            "value": "iOS",
+            "label": "iOS"
+        }
+    ]
+}
+
