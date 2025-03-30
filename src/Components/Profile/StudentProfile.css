@@ -1,0 +1,11 @@
+.nol {
+    border: none!important;
+}
+
+.fh {
+    height: 100vh;
+}
+
+.ant-card-meta-title {
+    white-space: wrap !important;
+}

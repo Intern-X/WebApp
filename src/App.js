@@ -8,6 +8,7 @@ import { persistStore } from 'redux-persist';
 import Dashboard from './Components/Dashboard/Dashboard';
 import AllCompanies from './Components/AllCompanies/AllCompanies';
 import { ConfigProvider, theme } from 'antd';
+import Company from './Components/AllCompanies/Company/Company';
 
 function App() {
   let persistor = persistStore(store);

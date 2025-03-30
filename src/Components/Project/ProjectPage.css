@@ -1,0 +1,4 @@
+.ant-divider-vertical.ant-divider-with-text-center::before,
+.ant-divider-vertical.ant-divider-with-text-center::after {
+    border-top: 1px solid red;
+}
