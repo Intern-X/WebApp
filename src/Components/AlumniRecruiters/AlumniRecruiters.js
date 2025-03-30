@@ -16,6 +16,7 @@ import {
   Tag,
   Space,
   Skeleton,
+  message,
 } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta.js";
@@ -25,6 +26,7 @@ import { useSelector } from "react-redux";
 import "./AlumniRecruiters.css";
 import AuthContext from "../AuthContext/AuthContext.js";
 import { UNAUTHORIZED } from "../../Utils/UserStates.js";
+import RequestUtils from "../../Utils/RequestUtils.js";
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -34,6 +36,74 @@ function AlumniRecruiters() {
   const { refresh } = useSelector((state) => state.status);
   const { loading } = useSelector((state) => state.status);
 
+  const recruiters = [
+    {
+      id: "recruiter1",
+      name: "Emily Davis",
+      title: "Technical Recruiter",
+      position: "Technical Recruiter", // Added field (mirrors title)
+      company: "Apple",
+      email: "emily.davis@apple.com",  // Added email field
+      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter1",
+      experience: "5 years",
+      tags: ["Software", "Engineering", "TechRecruitment"],
+      industry: "Technology",
+    },
+    {
+      id: "recruiter2",
+      name: "Robert Martinez",
+      title: "Talent Acquisition Manager",
+      position: "Talent Acquisition Manager",
+      company: "Facebook",
+      email: "robert.martinez@facebook.com",
+      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter2",
+      experience: "8 years",
+      tags: ["TalentAcquisition", "Engineering", "Leadership"],
+      industry: "Technology"
+    },
+    {
+      id: "recruiter3",
+      name: "Michelle White",
+      title: "University Recruiter",
+      position: "University Recruiter",
+      company: "Tesla",
+      email: "michelle.white@tesla.com",
+      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter3",
+      experience: "4 years",
+      tags: ["CampusRecruitment", "Engineering", "InternPrograms"],
+      industry: "Automotive"
+    },
+    {
+      id: "recruiter4",
+      name: "Daniel Brown",
+      title: "Senior Technical Recruiter",
+      position: "Senior Technical Recruiter",
+      company: "Netflix",
+      email: "daniel.brown@netflix.com",
+      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter4",
+      experience: "7 years",
+      tags: ["Software", "Engineering", "MediaTech"],
+      industry: "Entertainment"
+    },
+    {
+      id: "recruiter5",
+      name: "Jessica Wong",
+      title: "Global Recruiting Lead",
+      position: "Global Recruiting Lead",
+      company: "KPMG",
+      email: "jessica.wong@kpmg.com",
+      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter5",
+      experience: "10 years",
+      tags: ["Consulting", "Accounting", "Leadership"],
+      industry: "Consulting"
+    },
+  ];
+  
+
+  const { allProjects } = useSelector((state) => state.projects);
+
+  console.log(allProjects);
+  console.log(recruiters);
   // ANTD CONFIG
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -52,6 +122,16 @@ function AlumniRecruiters() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterTags, setFilterTags] = useState([]);
   const [industryFilter, setIndustryFilter] = useState("");
+  const [displayedRecruiters, setDisplayedRecruiters] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const getCompany = (email) => {
+    if (!email) return ""; // or a fallback image URL
+    let domain = email.split("@")[1];
+    domain = domain.split(".")[0];
+    domain = domain.charAt(0).toUpperCase() + domain.slice(1).toLowerCase();
+    return domain;
+  };
 
   // MOCK DATA - In a real app, you would fetch this from an API
   const [alumniList, setAlumniList] = useState([
@@ -107,79 +187,34 @@ function AlumniRecruiters() {
     },
   ]);
 
-  const [recruiterList, setRecruiterList] = useState([
-    {
-      id: "recruiter1",
-      name: "Emily Davis",
-      title: "Technical Recruiter",
-      company: "Apple",
-      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter1",
-      experience: "5 years",
-      tags: ["Software", "Engineering", "TechRecruitment"],
-      industry: "Technology"
-    },
-    {
-      id: "recruiter2",
-      name: "Robert Martinez",
-      title: "Talent Acquisition Manager",
-      company: "Facebook",
-      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter2",
-      experience: "8 years",
-      tags: ["TalentAcquisition", "Engineering", "Leadership"],
-      industry: "Technology"
-    },
-    {
-      id: "recruiter3",
-      name: "Michelle White",
-      title: "University Recruiter",
-      company: "Tesla",
-      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter3",
-      experience: "4 years",
-      tags: ["CampusRecruitment", "Engineering", "InternPrograms"],
-      industry: "Automotive"
-    },
-    {
-      id: "recruiter4",
-      name: "Daniel Brown",
-      title: "Senior Technical Recruiter",
-      company: "Netflix",
-      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter4",
-      experience: "7 years",
-      tags: ["Software", "Engineering", "MediaTech"],
-      industry: "Entertainment"
-    },
-    {
-      id: "recruiter5",
-      name: "Jessica Wong",
-      title: "Global Recruiting Lead",
-      company: "KPMG",
-      imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=recruiter5",
-      experience: "10 years",
-      tags: ["Consulting", "Accounting", "Leadership"],
-      industry: "Consulting"
-    },
+  const [domainList, setDomainList] = useState([
+    "apple.com", "microsoft.com", "google.com", "amazon.com", "facebook.com"
   ]);
 
-  // All available industries from both lists
-  const allIndustries = [...new Set([
-    ...alumniList.map(alumni => alumni.industry),
-    ...recruiterList.map(recruiter => recruiter.industry)
-  ])];
+  const [recruiterList, setRecruiterList] = useState([]);
+  const [filteredRecruiters, setFilteredRecruiters] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // All available tags from both lists
-  const allTags = [...new Set([
-    ...alumniList.flatMap(alumni => alumni.tags),
-    ...recruiterList.flatMap(recruiter => recruiter.tags)
-  ])].map(tag => ({ label: tag, value: tag }));
-
-  // LOADING CARDS
-  const loadingCards = Array(4).fill({
-    name: <Skeleton active />,
-    id: "",
-    image: "",
-    content: "",
-    tags: [],
-  });
+  // Process industries from alumni list
+  const alumniIndustries = [...new Set(alumniList.map(alumni => alumni.industry))];
+  
+  // Process tags from alumni list
+  const alumniTags = [...new Set(alumniList.flatMap(alumni => alumni.tags))].map(tag => ({ label: tag, value: tag }));
+  
+  // Default industries for recruiters based on their companies
+  const getIndustryFromDomain = (domain) => {
+    if (domain.includes("apple") || domain.includes("google") || domain.includes("microsoft") || 
+        domain.includes("facebook") || domain.includes("amazon")) {
+      return "Technology";
+    } else if (domain.includes("goldmansachs") || domain.includes("jpmorgan") || 
+              domain.includes("morganstanley")) {
+      return "Finance";
+    } else if (domain.includes("bcg") || domain.includes("mckinsey") || domain.includes("bain")) {
+      return "Consulting";
+    } else {
+      return "Other";
+    }
+  };
 
   // FILTERING LOGIC
   const filteredAlumni = alumniList.filter(alumni => {
@@ -195,25 +230,89 @@ function AlumniRecruiters() {
     return matchesSearch && matchesTags && matchesIndustry;
   });
 
-  const filteredRecruiters = recruiterList.filter(recruiter => {
-    const matchesSearch = recruiter.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         recruiter.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         recruiter.title.toLowerCase().includes(searchQuery.toLowerCase());
+  // Handle company search
+  const handleCompanySearch = () => {
+    if (!searchQuery.trim()) {
+      message.warning("Please enter a company name");
+      return;
+    }
+
+    // Only proceed with company search if we're on the Recruiters tab
+    if (activeTab !== "2") {
+      return;
+    }
+
+    // Format the company search into a domain
+    let domain = searchQuery.toLowerCase().trim();
     
-    const matchesTags = filterTags.length === 0 || 
-                       filterTags.some(tag => recruiter.tags.includes(tag));
+    // Add .com if it's not already there and no other domain extension is present
+    if (!domain.includes(".")) {
+      domain = domain + ".com";
+    }
     
-    const matchesIndustry = !industryFilter || recruiter.industry === industryFilter;
+    setIsSearching(true);
     
-    return matchesSearch && matchesTags && matchesIndustry;
-  });
+    RequestUtils.get(`/recruiters?domain=${domain}`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success === true) {
+          setDisplayedRecruiters(data.emails || []);
+          
+          if (data.emails && data.emails.length > 0) {
+            message.success(`Found ${data.emails.length} recruiters at ${searchQuery}`);
+          } else {
+            message.info(`No recruiters found at ${searchQuery}`);
+          }
+        } else {
+          message.error("Error fetching recruiters");
+          setDisplayedRecruiters([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        message.error("Failed to fetch recruiters");
+        setDisplayedRecruiters([]);
+      })
+      .finally(() => {
+        setIsSearching(false);
+      });
+  };
+
+  console.log(filteredRecruiters);
 
   // REDIRECT TO LOGIN IF NOT AUTHENTICATED
   useEffect(() => {
-    if (userImpl == UNAUTHORIZED) {
+    if (userImpl === UNAUTHORIZED) {
       navigate("/");
+      return;
     }
-  }, [refresh, navigate]);
+
+    setIsLoading(false);
+    
+    // Initially set displayed recruiters to the default list
+    setDisplayedRecruiters(recruiters);
+  }, [userImpl, refresh]);
+
+  // Get all industries combining both lists
+  const allIndustries = [...new Set([
+    ...alumniIndustries,
+    ...recruiterList.map(recruiter => recruiter.industry || "Other")
+  ])];
+
+  // Get all tags combining both lists
+  const allTags = [...new Set([
+    ...alumniList.flatMap(alumni => alumni.tags),
+    ...recruiterList.flatMap(recruiter => recruiter.tags || [])
+  ])].map(tag => ({ label: tag, value: tag }));
+
+  // LOADING CARDS
+  const loadingCards = Array(4).fill({
+    name: <Skeleton active />,
+    id: "",
+    image: "",
+    content: "",
+    tags: [],
+  });
 
   const handleSearch = (value) => {
     setSearchQuery(value);
@@ -229,6 +328,11 @@ function AlumniRecruiters() {
 
   const handleTabChange = (key) => {
     setActiveTab(key);
+    
+    // Reset to default recruiters when switching tabs
+    if (key === "2") {
+      setDisplayedRecruiters(recruiters);
+    }
   };
 
   // RENDER ALUMNI CARD
@@ -245,6 +349,7 @@ function AlumniRecruiters() {
             src={alumni.imageUrl}
             size={50}
             style={{ marginRight: "15px" }}
+            shape="square"
           />
         }
         title={alumni.name}
@@ -265,7 +370,7 @@ function AlumniRecruiters() {
   // RENDER RECRUITER CARD
   const renderRecruiterCard = (recruiter) => (
     <Card
-      key={recruiter.id}
+      key={recruiter.email}
       style={{ width: 300, margin: "1rem" }}
       className="card1 glow"
       onClick={() => navigate(`/recruiters/${recruiter.id}`)}
@@ -273,19 +378,20 @@ function AlumniRecruiters() {
       <Meta
         avatar={
           <Avatar
-            src={recruiter.imageUrl}
+          src={recruiter.imageUrl || "https://logo.clearbit.com/" + getCompany(recruiter.email) + ".com"}
             size={50}
             style={{ marginRight: "15px" }}
           />
         }
         title={recruiter.name}
-        description={`${recruiter.title} at ${recruiter.company}`}
+        description={`${recruiter.position} at ${getCompany(recruiter.email)}`}
       />
       <div style={{ margin: "10px 0" }}>
-        <p>Experience: {recruiter.experience}</p>
+        <p>Email: {recruiter.email}</p>
+        {/* <p>Experience: {recruiter.position}</p> */}
       </div>
       <Space size={[0, 8]} wrap>
-        {recruiter.tags.map((tag) => {
+        {(recruiter.tags || []).map((tag) => {
           const color = colors[Math.floor(Math.random() * colors.length)];
           return <Tag color={color} key={tag}>{tag}</Tag>;
         })}
@@ -328,20 +434,35 @@ function AlumniRecruiters() {
                 <h1>Alumni & Recruiters</h1>
                 <h3 style={{ fontWeight: "normal" }}>
                   Connect with alumni who've been in your shoes or recruiters looking for talent like you.
-                  Build your professional network and explore career opportunities.
+                  Popular company recruiters are listed below. Sort by industry, skills, and more.
                 </h3>
                 
                 {/* Search and Filter Section */}
                 <Row gutter={16} style={{ marginBottom: 24 }}>
-                  <Col span={8}>
+                  <Col span={activeTab === "2" ? 6 : 8}>
                     <Input 
-                      placeholder="Search by name, company, or title" 
+                      placeholder={activeTab === "2" ? "Search by company (e.g. apple)" : "Search by name, company, or title"} 
                       prefix={<SearchOutlined />}
                       onChange={(e) => handleSearch(e.target.value)}
+                      value={searchQuery}
                       size="large"
+                      onPressEnter={activeTab === "2" ? handleCompanySearch : undefined}
                     />
                   </Col>
-                  <Col span={8}>
+                  {activeTab === "2" && (
+                    <Col span={2}>
+                      <Button 
+                        type="primary" 
+                        size="large" 
+                        onClick={handleCompanySearch}
+                        loading={isSearching}
+                        style={{ width: '100%' }}
+                      >
+                        Go
+                      </Button>
+                    </Col>
+                  )}
+                  {/* <Col span={8}>
                     <Select
                       mode="multiple"
                       allowClear
@@ -364,7 +485,7 @@ function AlumniRecruiters() {
                         <Option key={industry} value={industry}>{industry}</Option>
                       ))}
                     </Select>
-                  </Col>
+                  </Col> */}
                 </Row>
 
                 {/* Tabs for Alumni and Recruiters */}
@@ -386,12 +507,25 @@ function AlumniRecruiters() {
                   <TabPane tab="Recruiters" key="2">
                     <div className="mx-auto">
                       <Row>
-                        {(loading ? loadingCards : filteredRecruiters).map((recruiter) => (
-                          recruiter.name ? renderRecruiterCard(recruiter) : recruiter
-                        ))}
-                        {filteredRecruiters.length === 0 && !loading && (
+                        {isSearching ? (
+                          loadingCards.map((_, index) => (
+                            <Card
+                              key={index}
+                              style={{ width: 300, margin: "1rem" }}
+                              className="card1"
+                            >
+                              <Skeleton active avatar paragraph={{ rows: 4 }} />
+                            </Card>
+                          ))
+                        ) : (
+                          displayedRecruiters.map((recruiter) =>
+                            recruiter.name || recruiter.firstName ? renderRecruiterCard(recruiter) : null
+                          )
+                        )}
+                        {displayedRecruiters.length === 0 && !isSearching && (
                           <div style={{ margin: "20px auto", textAlign: "center" }}>
                             <h3>No recruiters found matching your criteria</h3>
+                            <p>Try searching for a specific company using the search bar above</p>
                           </div>
                         )}
                       </Row>

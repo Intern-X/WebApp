@@ -15,9 +15,13 @@ import {
     Input,
     InputNumber,
     DatePicker,
-    Breadcrumb
+    Breadcrumb,
+    List,
+    Spin,
+    Empty,
+    message
 } from "antd";
-import { HomeOutlined, PlusOutlined } from "@ant-design/icons";
+import { HomeOutlined, PlusOutlined, UserOutlined, MailOutlined } from "@ant-design/icons";
 import { BiBulb } from "react-icons/bi";
 import Meta from "antd/es/card/Meta.js";
 import React, { useState, useEffect, useContext } from "react";
@@ -64,6 +68,11 @@ function Company() {
 
     const currentCompany = allCompanies.filter((company) => company.id == params.id)[0];
 
+
+    // RECRUITERS STATE
+    const [displayedRecruiters, setDisplayedRecruiters] = useState([]);
+    const [isLoadingRecruiters, setIsLoadingRecruiters] = useState(false);
+    
 
     // ANTD CONFIG
 
@@ -122,6 +131,49 @@ function Company() {
         setProjectModal(false);
     };
 
+    // FETCH RECRUITERS
+    const fetchRecruiters = () => {
+        if (!currentCompany || !currentCompany.website) {
+            return;
+        }
+        
+        // Extract domain from website URL
+        let domain = "";
+        try {
+            const url = new URL(currentCompany.website);
+            domain = url.hostname.replace('www.', '');
+        } catch (error) {
+            domain = currentCompany.website.replace('http://', '').replace('https://', '').split('/')[0];
+        }
+        
+        setIsLoadingRecruiters(true);
+        
+        RequestUtils.get(`/recruiters?domain=${domain}`)
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success === true) {
+                    setDisplayedRecruiters(data.emails || []);
+                    
+                    if (data.emails && data.emails.length > 0) {
+                        message.success(`Found ${data.emails.length} recruiters at ${domain}`);
+                    } else {
+                        message.info(`No recruiters found at ${domain}`);
+                    }
+                } else {
+                    message.error("Error fetching recruiters");
+                    setDisplayedRecruiters([]);
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                message.error("Failed to fetch recruiters");
+                setDisplayedRecruiters([]);
+            })
+            .finally(() => {
+                setIsLoadingRecruiters(false);
+            });
+    };
+
     // COMPANY INFO
     const companyInfo = [
         {
@@ -136,6 +188,12 @@ function Company() {
         }
     ];
 
+    // Fetch recruiters when tab changes
+    const handleTabChange = (activeKey) => {
+        if (activeKey === "4" && displayedRecruiters.length === 0) {
+            fetchRecruiters();
+        }
+    };
 
     // CHECK USERIMPL FOR USER
     useEffect(() => {
@@ -238,8 +296,8 @@ function Company() {
                             </Card>
                         </Col>
                         <Col span={16}>
-                            <h1 style={{ margin: "0 0 12px" }}>Projects</h1>
-                            <Tabs defaultActiveKey="1">
+                            <h1 style={{ margin: "0 0 12px" }}>Internships</h1>
+                            <Tabs defaultActiveKey="1" onChange={handleTabChange}>
                                 <TabPane tab="Applications" key="1">
                                     <div style={{ display: "flex", justifyContent: "space-between" }}>
                                         {!isCompany ? <></> :
@@ -251,14 +309,14 @@ function Company() {
                                     <br />
                                     <div style={{ display: "flex", flexWrap: "wrap", overflowX: "auto" }}>
                                         {currentCompany.projects.map((project, index) => (
-                                            <ProjectCard id={project} companyName={currentCompany.name} status={1} />
+                                            <ProjectCard id={project} companyName={currentCompany.name} status={1} key={project} />
                                         ))}
                                     </div>
                                 </TabPane>
                                 <TabPane tab="Active" key="2">
                                     <div style={{ display: "flex", flexWrap: "wrap", overflowX: "auto" }}>
                                         {currentCompany.projects.map((project, index) => (
-                                            <ProjectCard id={project} companyName={currentCompany.name} status={2} />
+                                            <ProjectCard id={project} companyName={currentCompany.name} status={2} key={project} />
                                         ))}
                                        
                                     </div>
@@ -266,8 +324,74 @@ function Company() {
                                 <TabPane tab="Completed" key="3">
                                     <div style={{ display: "flex", flexWrap: "wrap", overflowX: "auto" }}>
                                         {currentCompany.projects.map((project, index) => (
-                                            <ProjectCard id={project} companyName={currentCompany.name} status={3} />
+                                            <ProjectCard id={project} companyName={currentCompany.name} status={3} key={project} />
                                         ))}
+                                    </div>
+                                </TabPane>
+                                <TabPane tab="Recruiters" key="4">
+                                    <div style={{ minHeight: "200px" }}>
+                                        {isLoadingRecruiters ? (
+                                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px" }}>
+                                                <Spin size="large" />
+                                            </div>
+                                        ) : displayedRecruiters.length > 0 ? (
+                                            <List
+                                                itemLayout="horizontal"
+                                                dataSource={displayedRecruiters}
+                                                renderItem={(recruiter) => (
+                                                    <List.Item>
+                                                        <List.Item.Meta
+                                                            avatar={<Avatar icon={<UserOutlined />} />}
+                                                            title={
+                                                                <>
+                                                                    {recruiter.firstName && recruiter.lastName ? 
+                                                                        `${recruiter.firstName} ${recruiter.lastName}` : 
+                                                                        recruiter.email}
+                                                                </>
+                                                            }
+                                                            description={
+                                                                <div>
+                                                                    <div>{recruiter.email}</div>
+                                                                    {recruiter.position && <div>Position: {recruiter.position}</div>}
+                                                                    {/* {recruiter.department && <div>Department: {recruiter.department}</div>} */}
+                                                                    <div style={{ marginTop: "8px" }}>
+                                                                        <Button 
+                                                                            type="primary" 
+                                                                            size="small"
+                                                                            icon={<MailOutlined />}
+                                                                            onClick={() => window.open(`mailto:${recruiter.email}`)}
+                                                                        >
+                                                                            Contact
+                                                                        </Button>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        />
+                                                        {recruiter.confidence && (
+                                                            <Tag color={recruiter.confidence > 0.7 ? "green" : recruiter.confidence > 0.4 ? "blue" : "orange"}>
+                                                                {Math.round(recruiter.confidence)}% Confident
+                                                            </Tag>
+                                                        )}
+                                                    </List.Item>
+                                                )}
+                                            />
+                                        ) : (
+                                            <Empty 
+                                                description="No recruiters found for this company" 
+                                                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                                            />
+                                        )}
+                                        
+                                        {!isLoadingRecruiters && (
+                                            <div style={{ marginTop: "20px", textAlign: "center" }}>
+                                                <Button 
+                                                    type="primary" 
+                                                    onClick={fetchRecruiters}
+                                                >
+                                                    Refresh Recruiters
+                                                </Button>
+                                            </div>
+                                        )}
                                     </div>
                                 </TabPane>
                             </Tabs>
