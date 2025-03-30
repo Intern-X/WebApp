@@ -1,8 +1,8 @@
 class RequestUtils {
 
     static getDomain() {
-    //   return "http://localhost:8000";
-      return "https://projx-server-70cdfb12f7a8.herokuapp.com";
+       return "http://localhost:8000";
+    //   return "https://projx-server-70cdfb12f7a8.herokuapp.com";
      
     }
 
