@@ -350,7 +350,7 @@ function Dashboard() {
                     <h3 style={{ marginBottom: 32, fontWeight: "normal" }}>
                       {"Hello " +
                         (userInfo && userInfo.name ? userInfo.name.split(" ")[0] : "") +
-                        "! Get started on kickstarting your career with Proj-X!"}
+                        "! Get started on kickstarting your career with Intern-X!"}
                     </h3>
                   </Col>
                   <Col
