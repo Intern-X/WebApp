@@ -57,6 +57,8 @@ function Login() {
       dispatch(setAllStudents(data[4]));
 
 
+    }).then(() => {
+      navigate("/dashboard");
     }
     );
   }
