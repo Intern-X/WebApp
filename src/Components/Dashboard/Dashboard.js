@@ -99,6 +99,11 @@ function Dashboard() {
   let [name, setName] = useState("");
   let [confettiOn, setConfettiOn] = useState(false);
 
+  // SIGNUP MODAL
+
+
+
+
   /**
    * Signs up a student
    * @param {Object} values - values from the form
@@ -686,6 +691,8 @@ function Dashboard() {
         </Layout>
 
         {/* Getting started modal and confetti remain unchanged */}
+
+        {/* Getting started modal */}
         <Modal
           title="Getting Started!"
           open={signup}
@@ -694,17 +701,157 @@ function Dashboard() {
           footer={[]}
         >
           <p style={{ marginBottom: 20 }}>
-            Tell us a little bit about yourself to customize your ProjX experience!
+            Tell us a little bit about yourself to customize your ProjX
+            experience!
           </p>
-          <Form layout="vertical" style={{ marginBottom: 0 }} onFinish={signUpStudent}>
-            {/* Form fields */}
+          
+          <Form
+            layout="vertical"
+            style={{ marginBottom: 0 }}
+            onFinish={signUpStudent}
+          >
+            <Form.Item
+              label="First Name"
+              name="firstName"
+              required
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Input
+                size="medium"
+                placeholder="Enter your first name"
+                width={200}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Last Name"
+              name="lastName"
+              required
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Input
+                size="medium"
+                placeholder="Enter your last name"
+                width={200}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Confirm Email"
+              name="email"
+              required
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Input
+                size="medium"
+                placeholder="Enter your login email address"
+                width={200}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Current School/Institution"
+              name="school"
+              required
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Input
+                size="medium"
+                placeholder="Enter your institution"
+                width={200}
+              />
+            </Form.Item>
+            <Form.Item
+              label="LinkedIn URL"
+              name="linkedin"
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Input
+                size="medium"
+                placeholder="Enter your LinkedIn URL"
+                width={200}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Interests"
+              name="interests"
+              required
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Select
+                mode="multiple"
+                size={"medium"}
+                style={{
+                  width: "100%",
+                  marginBottom: "10px",
+                }}
+                options={tags}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Major"
+              name="major"
+              required
+              style={{
+                width: "75%",
+                marginBottom: "10px",
+              }}
+            >
+              <Select size="medium" placeholder="Select a major">
+                <Option value="Computer Science">Computer Science</Option>
+                <Option value="Mechanical Engineering">
+                  Mechanical Engineering
+                </Option>
+                <Option value="Robotics Engineering">
+                  Robotics Engineering
+                </Option>
+                <Option value="Electrical Engineering">
+                  Electrical Engineering
+                </Option>
+                <Option value="Biomedical Engineering">
+                  Biomedical Engineering
+                </Option>
+                <Option value="Chemistry">Chemical Engineering</Option>
+                <Option value="Aerospace Engineering">
+                  Aerospace Engineering
+                </Option>
+                <Option value="Civil Engineering">Civil Engineering</Option>
+                <Option value="Biology">Biology</Option>
+                <Option value="Physics">Physics</Option>
+                <Option value="IMGD">IMGD</Option>
+                <Option value="Humanities">Humanities</Option>
+              </Select>
+            </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" onClick={() => setConfettiOn(true)} style={{ marginTop: 28 }}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={() => {
+                  setConfettiOn(true);
+                }}
+                style={{ marginTop: 28 }}
+              >
                 Continue
               </Button>
             </Form.Item>
           </Form>
         </Modal>
+
 
         <Confetti
           numberOfPieces={confettiOn ? 200 : 0}
