@@ -39,7 +39,7 @@ import AuthContext from "../AuthContext/AuthContext.js";
 import { UNAUTHORIZED } from "../../Utils/UserStates.js";
 import Navbar from "../../Navbar/Navbar.js";
 import generateCoffeeChat from "../../Utils/generateCoffeeChat.js";
-
+import generateReferralRequest from "../../Utils/generateReferralRequest.js";
 const { Meta } = Card;
 const { Title, Paragraph, Text } = Typography;
 const { TextArea } = Input;
@@ -69,7 +69,10 @@ function AlumniProfile() {
   const [messageApi, contextHolder] = message.useMessage();
   const [emailSubject, setEmailSubject] = useState("");
   
-
+  const [referralContent, setReferralContent] = useState("");
+  const [isReferralModalVisible, setIsReferralModalVisible] = useState(false);
+  const [isGeneratingReferral, setIsGeneratingReferral] = useState(false);
+  const [referralSubject, setReferralSubject] = useState("");
   
 
   // MOCK DATA - In a real app, you would fetch this based on the ID
@@ -156,7 +159,46 @@ function AlumniProfile() {
         setIsGenerating(false);
       });
     };
+
+    // Handle referral request generation
+    const handleGenerateReferralRequest = () => {
+      setIsReferralModalVisible(true);
+      setReferralContent("Generating email...");
+      setReferralSubject("Generating subject...");
+      setIsGeneratingReferral(true);
+      generateReferralRequest(alumni, userInfo, (response) => {
+        setReferralContent(response.content || "");
+        setReferralSubject(response.subject || `Referral Request - ${userInfo.name || 'Prospective Candidate'}`);
+        setIsGeneratingReferral(false);
+      });
+    };
+    
+    const copyReferralToClipboard = () => {
+      const textToCopy = `Subject: ${referralSubject}\n\n${referralContent}`;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          messageApi.open({
+            type: 'success',
+            content: 'Referral request copied to clipboard!',
+          });
+        })
+        .catch(err => {
+          messageApi.open({
+            type: 'error',
+            content: 'Failed to copy: ' + err,
+          });
+        });
+    };
+
+    // Open referral request in user's email client
+const openReferralInEmailClient = () => {
+  if (!alumni || !referralContent) return;
   
+  const mailtoUrl = `mailto:${alumni.email}?subject=${encodeURIComponent(referralSubject)}&body=${encodeURIComponent(referralContent)}`;
+  
+  window.open(mailtoUrl, '_blank');
+};
+
     // Copy email to clipboard
     const copyToClipboard = () => {
       const textToCopy = `Subject: ${emailSubject}\n\n${emailContent}`;
@@ -397,8 +439,9 @@ function AlumniProfile() {
                       ))}
                     </ul>
                     <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                      <Button type="primary">Request Mentoring</Button>
-                      <Button onClick={handleGenerateCoffeeChat}>Generate Coffee Chat</Button>
+                      <Button type = "primary" onClick={handleGenerateCoffeeChat}>Generate Coffee Chat</Button>
+                      <Button type="primary" onClick={handleGenerateReferralRequest}>Generate Referral Request</Button>
+                      
                     </div>
 
                   </div>
@@ -500,6 +543,7 @@ function AlumniProfile() {
           </Button>
         ]}
       >
+
         <div style={{ marginBottom: '12px', marginTop: '16px' }}>
           <label htmlFor="email-subject">Subject:</label>
           <Input
@@ -518,6 +562,63 @@ function AlumniProfile() {
           style={{ marginTop: '4px' }}
         />
       </Modal>
+
+
+      {/* Referral Request Modal */}
+<Modal
+  title="Generated Referral Request"
+  open={isReferralModalVisible}
+  onOk={() => setIsReferralModalVisible(false)}
+  onCancel={() => setIsReferralModalVisible(false)}
+  width={700}
+  footer={[
+    <div key="left-buttons" style={{ float: 'left' }}>
+      <Button
+        icon={<CopyOutlined />}
+        onClick={copyReferralToClipboard}
+        style={{ marginRight: '8px' }}
+      >
+        Copy to Clipboard
+      </Button>
+      <Button
+        icon={<ReloadOutlined />}
+        onClick={handleGenerateReferralRequest}
+        loading={isGeneratingReferral}
+        style={{ marginRight: '8px' }}
+      >
+        Generate Again
+      </Button>
+      <Button
+        icon={<SendOutlined />}
+        onClick={openReferralInEmailClient}
+        type="primary"
+      >
+        Open in Email Client
+      </Button>
+    </div>,
+    <Button key="close" onClick={() => setIsReferralModalVisible(false)}>
+      Close
+    </Button>
+  ]}
+>
+  <div style={{ marginBottom: '12px', marginTop: '16px' }}>
+    <label htmlFor="referral-subject">Subject:</label>
+    <Input
+      id="referral-subject"
+      value={referralSubject}
+      onChange={(e) => setReferralSubject(e.target.value)}
+      style={{ marginTop: '4px' }}
+    />
+  </div>
+  <label htmlFor="referral-body">Email Body:</label>
+  <TextArea
+    id="referral-body"
+    value={referralContent}
+    onChange={(e) => setReferralContent(e.target.value)}
+    autoSize={{ minRows: 10, maxRows: 20 }}
+    style={{ marginTop: '4px' }}
+  />
+</Modal>
     </ConfigProvider>
   );
 }
