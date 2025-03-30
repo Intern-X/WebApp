@@ -9,7 +9,11 @@ import Dashboard from './Components/Dashboard/Dashboard';
 import AllCompanies from './Components/AllCompanies/AllCompanies';
 import { ConfigProvider, theme } from 'antd';
 import Company from './Components/AllCompanies/Company/Company';
-
+import StudentProfile from './Components/Profile/StudentProfile';
+import ProjectPage from './Components/Project/ProjectPage';
+import AlumniRecruiters from './Components/AlumniRecruiters/AlumniRecruiters';
+import RecruiterProfile from './Components/AlumniRecruiters/RecruiterProfile';
+import AlumniProfile from './Components/AlumniRecruiters/AlumniProfile';
 function App() {
   let persistor = persistStore(store);
   
@@ -31,6 +35,11 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />}/>
               <Route path="/companies" element={<AllCompanies />} />
               <Route path="/companies/:id" element={<Company />} />
+              <Route path="/profile/:id" element={<StudentProfile />} />
+              <Route path="/projects/:id" element={<ProjectPage />} />
+              <Route path="/alumni-recruiters" element={<AlumniRecruiters />} />
+              <Route path="/alumni/:id" element={<AlumniProfile />} />
+              <Route path="/recruiters/:id" element={<RecruiterProfile />} />
             </Routes>
           </Router>
         </ConfigProvider>
