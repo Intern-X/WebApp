@@ -6,6 +6,7 @@ import store from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import Dashboard from './Components/Dashboard/Dashboard'
+import AllCompanies from './Components/AllCompanies/AllCompanies';
 
 function App() {
   let persistor = persistStore(store);
@@ -17,7 +18,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />}/>
-          </Routes>
+            <Route path="/companies" element={<AllCompanies />} />
+            </Routes>
         </Router>
       </PersistGate>
     </Provider>
