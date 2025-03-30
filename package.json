@@ -13,6 +13,7 @@
     "csv-parse": "^5.5.3",
     "dayjs": "^1.11.10",
     "firebase": "^10.8.0",
+    "llama-stack-client": "^0.1.9",
     "llamaai": "^1.0.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
