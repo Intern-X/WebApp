@@ -5,7 +5,7 @@ import { useEffect, useState, useContext } from "react";
 import "./Login.css";
 
 // IMAGES
-import pageImage from "../assets/images/cover-image.png";
+import pageImage from "../assets/images/cover_image_internx.png";
 import LoginView from "./LoginView/LoginView";
 import { useNavigate } from "react-router";
 import { useAuthState } from "react-firebase-hooks/auth";
