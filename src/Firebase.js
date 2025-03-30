@@ -16,17 +16,22 @@ import { useNavigate } from "react-router";
 
 // FIREBASE CONFIG
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    apiKey: "AIzaSyAT6caE40fnQVLxNmWMJ3mWY2PbTB7SkD4",
+    authDomain: "projx-hbp.firebaseapp.com",
+    projectId: "projx-hbp",
+    storageBucket: "projx-hbp.appspot.com",
+    messagingSenderId: "773328529812",
+    appId: "1:773328529812:web:3b472e494f685211f38781",
   };
 
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
+
+// const provider = new OAuthProvider('microsoft.com');
+// provider.setCustomParameters({
+//     tenant: "wpi.edu"
+// });
 
 
 // AUTHENTICATION WITH EMAIL AND PASSWORD

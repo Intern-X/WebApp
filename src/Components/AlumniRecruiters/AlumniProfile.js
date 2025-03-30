@@ -10,45 +10,46 @@ import {
   Avatar,
   Tag,
   Button,
+  Timeline,
   Divider,
   List,
+  Modal,
   Typography,
+  Input,
   Breadcrumb,
   Skeleton,
-  Timeline,
-  Collapse,
-  Modal,
-  Input,
   message
 } from "antd";
 import {
   MailOutlined,
   LinkedinOutlined,
   CalendarOutlined,
-  PhoneOutlined,
+  BankOutlined,
+  BookOutlined,
   EnvironmentOutlined,
-  ReloadOutlined,
-  ScheduleOutlined,
+  PhoneOutlined,
+  ProjectOutlined,
+  SendOutlined,
   CopyOutlined,
-  SendOutlined
+  ReloadOutlined,
 } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout.js";
 import { useSelector } from "react-redux";
 import AuthContext from "../AuthContext/AuthContext.js";
 import { UNAUTHORIZED } from "../../Utils/UserStates.js";
 import Navbar from "../../Navbar/Navbar.js";
-import generateEmail from "../../Utils/generateEmail.js";
+import generateCoffeeChat from "../../Utils/generateCoffeeChat.js";
 
 const { Meta } = Card;
 const { Title, Paragraph, Text } = Typography;
-const { Panel } = Collapse;
 const { TextArea } = Input;
 
-function RecruiterProfile() {
+function AlumniProfile() {
   // REDUX AND AUTH
   const { refresh } = useSelector((state) => state.status);
-  const {userInfo} = useSelector((state)=>state.userInfo)
   const { userImpl } = useContext(AuthContext);
+  const {userInfo} = useSelector((state)=>state.userInfo)
+
 
   // NAVIGATION
   const navigate = useNavigate();
@@ -61,93 +62,76 @@ function RecruiterProfile() {
 
   // STATE
   const [loading, setLoading] = useState(true);
-  const [recruiter, setRecruiter] = useState(null);
+  const [alumni, setAlumni] = useState(null);
   const [emailContent, setEmailContent] = useState("");
   const [isEmailModalVisible, setIsEmailModalVisible] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [emailSubject, setEmailSubject] = useState("");
+  
 
+  
 
   // MOCK DATA - In a real app, you would fetch this based on the ID
   useEffect(() => {
     // Simulate API call
     setTimeout(() => {
-      setRecruiter({
+      setAlumni({
         id: id,
-        name: "Emily Davis",
-        title: "Technical Recruiter",
-        company: "Apple",
+        name: "Alex Johnson",
+        title: "Software Engineer",
+        company: "Google",
         imageUrl: "https://api.dicebear.com/7.x/miniavs/svg?seed=" + id,
-        email: "emily.davis@apple.com",
-        phone: "+1 (555) 987-6543",
-        location: "Cupertino, CA",
-        linkedin: "emily-davis-recruiter",
-        tags: ["Software", "Engineering", "TechRecruitment", "iOS", "MachineLearning"],
+        gradYear: "2020",
+        email: "alex.johnson@example.com",
+        phone: "+1 (555) 123-4567",
+        location: "San Francisco, CA",
+        linkedin: "alex-johnson",
+        tags: ["Software", "MachineLearning", "Cloud", "Python", "WebDev"],
         industry: "Technology",
-        experience: "5 years",
-        bio: "Technical recruiter with 5 years of experience hiring top engineering talent. Passionate about connecting the right people with the right opportunities and helping students launch successful careers in tech.",
-        hiring: [
+        bio: "Alumni with 3+ years of experience in software engineering, specializing in machine learning applications. Passionate about mentoring students and helping them prepare for careers in tech.",
+        education: [
           {
-            role: "Software Engineer",
-            level: "Entry Level/New Grad",
-            team: "iOS Development",
-            description: "Looking for new graduates with iOS development experience or strong mobile programming fundamentals."
-          },
-          {
-            role: "Machine Learning Engineer",
-            level: "Internship",
-            team: "AI/ML Research",
-            description: "Seeking ML/AI students for summer internships focused on natural language processing."
-          },
-          {
-            role: "UX Designer",
-            level: "Entry Level/New Grad",
-            team: "Human Interface",
-            description: "Seeking designers with a portfolio demonstrating creative problem solving and user-centered design."
+            degree: "B.S. Computer Science",
+            school: "Washington University In St. Louis",
+            year: "2016-2020"
           }
         ],
-        career_history: [
+        experience: [
           {
-            title: "Technical Recruiter",
-            company: "Apple",
+            title: "Software Engineer",
+            company: "Google",
             duration: "2020 - Present",
-            description: "Recruiting software engineers, ML specialists, and UX designers."
+            description: "Working on machine learning infrastructure for search products."
           },
           {
-            title: "University Recruiter",
-            company: "Facebook",
-            duration: "2018 - 2020",
-            description: "Led campus recruiting initiatives at top engineering schools."
+            title: "Software Engineering Intern",
+            company: "Microsoft",
+            duration: "Summer 2019",
+            description: "Developed features for the Azure cloud platform."
           },
           {
-            title: "Recruiting Coordinator",
-            company: "Amazon",
-            duration: "2016 - 2018",
-            description: "Coordinated technical interviews and candidate experiences."
+            title: "Research Assistant",
+            company: "Stanford AI Lab",
+            duration: "2018 - 2019",
+            description: "Assisted with natural language processing research."
           }
         ],
-        events: [
+        projects: [
           {
-            name: "Apple Career Fair",
-            date: "October 15, 2023",
-            location: "Virtual",
-            description: "Annual career fair for software engineering and design roles."
+            name: "ML Model Optimization Framework",
+            description: "Led a team that built a framework to optimize machine learning models for production."
           },
           {
-            name: "Women in Tech Mixer",
-            date: "November 5, 2023",
-            location: "San Francisco",
-            description: "Networking event for women pursuing careers in technology."
+            name: "Healthcare Analytics Dashboard",
+            description: "Created an analytics dashboard for tracking patient outcomes in real-time."
           }
         ],
-        tips: [
-          "Focus your resume on projects and experience relevant to the role you're applying for",
-          "Practice coding problems on platforms like LeetCode or HackerRank before technical interviews",
-          "Research the company and prepare thoughtful questions about their products and technology",
-          "Don't just highlight technical skills - we value communication and teamwork equally",
-          "Follow up after every interview with a thank you note that references specific conversation points"
-        ]
+        mentoring: {
+          available: true,
+          topics: ["Career advice", "Resume review", "Interview preparation", "Technical mentoring"],
+          preferredContact: "Email"
+        }
       });
       setLoading(false);
     }, 1000);
@@ -160,46 +144,46 @@ function RecruiterProfile() {
     }
   }, [refresh, navigate]);
 
-  // Handle email generation
-  const handleGenerateEmail = () => {
-    setIsEmailModalVisible(true);
-    setEmailContent("Generating email...");
-    setEmailSubject("Generating subject...");
-    setIsGenerating(true);
-    generateEmail(recruiter, userInfo, (response) => {
-      setEmailContent(response.content || "");
-      setEmailSubject(response.subject || `Introduction - ${userInfo.name || 'Prospective Candidate'}`);
-      setIsGenerating(false);
-    });
-  };
-
-  // Copy email to clipboard
-  const copyToClipboard = () => {
-    const textToCopy = `Subject: ${emailSubject}\n\n${emailContent}`;
-    navigator.clipboard.writeText(textToCopy)
-      .then(() => {
-        messageApi.open({
-          type: 'success',
-          content: 'Email copied to clipboard!',
-        });
-      })
-      .catch(err => {
-        messageApi.open({
-          type: 'error',
-          content: 'Failed to copy: ' + err,
-        });
+    // Handle email generation
+    const handleGenerateCoffeeChat = () => {
+      setIsEmailModalVisible(true);
+      setEmailContent("Generating email...");
+      setEmailSubject("Generating subject...");
+      setIsGenerating(true);
+      generateCoffeeChat(alumni, userInfo, (response) => {
+        setEmailContent(response.content || "");
+        setEmailSubject(response.subject || `Introduction - ${userInfo.name || 'Prospective Candidate'}`);
+        setIsGenerating(false);
       });
-  };
-
-  // Open email in user's email client
-  const openInEmailClient = () => {
-    if (!recruiter || !emailContent) return;
-    
-    const mailtoUrl = `mailto:${recruiter.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailContent)}`;
-    
-    window.open(mailtoUrl, '_blank');
-  };
-
+    };
+  
+    // Copy email to clipboard
+    const copyToClipboard = () => {
+      const textToCopy = `Subject: ${emailSubject}\n\n${emailContent}`;
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+          messageApi.open({
+            type: 'success',
+            content: 'Email copied to clipboard!',
+          });
+        })
+        .catch(err => {
+          messageApi.open({
+            type: 'error',
+            content: 'Failed to copy: ' + err,
+          });
+        });
+    };
+  
+    // Open email in user's email client
+    const openInEmailClient = () => {
+      if (!alumni || !emailContent) return;
+      
+      const mailtoUrl = `mailto:${alumni.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailContent)}`;
+      
+      window.open(mailtoUrl, '_blank');
+    };
+  
   // RENDER
   if (loading) {
     return (
@@ -242,7 +226,6 @@ function RecruiterProfile() {
         },
       }}
     >
-      {contextHolder}
       <Layout className="white">
         <Navbar tab={"3"} />
         <Layout
@@ -272,13 +255,13 @@ function RecruiterProfile() {
                   <Meta
                     avatar={
                       <Avatar
-                        src={recruiter.imageUrl}
+                        src={alumni.imageUrl}
                         size={100}
                         style={{ marginBottom: "10px" }}
                       />
                     }
-                    title={recruiter.name}
-                    description={`${recruiter.title} at ${recruiter.company}`}
+                    title={alumni.name}
+                    description={`${alumni.title} at ${alumni.company}`}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -303,7 +286,7 @@ function RecruiterProfile() {
                           <span style={{ fontWeight: "bold" }}>Email</span>
                         </div>
                         <span style={{ marginLeft: 8 }}>
-                          <a href={`mailto:${recruiter.email}`}>{recruiter.email}</a>
+                          <a href={`mailto:${alumni.email}`}>{alumni.email}</a>
                         </span>
                       </div>
                     </div>
@@ -321,7 +304,7 @@ function RecruiterProfile() {
                           <PhoneOutlined style={{ marginRight: 13 }} />
                           <span style={{ fontWeight: "bold" }}>Phone</span>
                         </div>
-                        <span style={{ marginLeft: 8 }}>{recruiter.phone}</span>
+                        <span style={{ marginLeft: 8 }}>{alumni.phone}</span>
                       </div>
                     </div>
 
@@ -339,7 +322,7 @@ function RecruiterProfile() {
                           <span style={{ fontWeight: "bold" }}>LinkedIn</span>
                         </div>
                         <span style={{ marginLeft: 8 }}>
-                          <a href={`https://linkedin.com/in/${recruiter.linkedin}`}  target="_blank">{recruiter.linkedin}</a>
+                          <a href={`https://linkedin.com/in/${alumni.linkedin}`} target="_blank">{alumni.linkedin}</a>
                         </span>
                       </div>
                     </div>
@@ -357,7 +340,7 @@ function RecruiterProfile() {
                           <EnvironmentOutlined style={{ marginRight: 13 }} />
                           <span style={{ fontWeight: "bold" }}>Location</span>
                         </div>
-                        <span style={{ marginLeft: 8 }}>{recruiter.location}</span>
+                        <span style={{ marginLeft: 8 }}>{alumni.location}</span>
                       </div>
                     </div>
 
@@ -372,101 +355,107 @@ function RecruiterProfile() {
                       >
                         <div style={{ display: "flex", alignItems: "center" }}>
                           <CalendarOutlined style={{ marginRight: 13 }} />
-                          <span style={{ fontWeight: "bold" }}>Experience</span>
+                          <span style={{ fontWeight: "bold" }}>Graduation</span>
                         </div>
-                        <span style={{ marginLeft: 8 }}>{recruiter.experience}</span>
+                        <span style={{ marginLeft: 8 }}>{alumni.gradYear}</span>
                       </div>
                     </div>
 
-                    <Divider orientation="left">Expertise Areas</Divider>
+                    <div style={{ marginBottom: "5px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "1rem",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <BookOutlined style={{ marginRight: 13 }} />
+                          <span style={{ fontWeight: "bold" }}>Education</span>
+                        </div>
+                        <span style={{ marginLeft: 8 }}>{alumni.education[0].degree}</span>
+                      </div>
+                    </div>
+
+                    <Divider orientation="left">Skills & Expertise</Divider>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "16px" }}>
-                      {recruiter.tags.map(tag => (
+                      {alumni.tags.map(tag => (
                         <Tag color="#786AC9" key={tag}>{tag}</Tag>
                       ))}
                     </div>
                   </div>
 
-                  <Divider orientation="left">Connect</Divider>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                    <Button type="primary">Schedule a Meeting</Button>
-                    <Button onClick={handleGenerateEmail}>Generate Cold Email</Button>
-                    <Button>Share Resume</Button>
+                  <Divider orientation="left">Mentoring</Divider>
+                  <div>
+                    <p><strong>Availability:</strong> {alumni.mentoring.available ? "Available" : "Unavailable"}</p>
+                    <p><strong>Preferred Contact:</strong> {alumni.mentoring.preferredContact}</p>
+                    <p><strong>Topics:</strong></p>
+                    <ul>
+                      {alumni.mentoring.topics.map((topic, index) => (
+                        <li key={index}>{topic}</li>
+                      ))}
+                    </ul>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      <Button type="primary">Request Mentoring</Button>
+                      <Button onClick={handleGenerateCoffeeChat}>Generate Coffee Chat</Button>
+                    </div>
+
                   </div>
                 </Card>
               </Col>
 
-              {/* Right Column - Experience & Opportunities */}
+              {/* Right Column - Experience & Projects */}
               <Col span={16}>
                 <Card>
                   <Title level={4}>About</Title>
-                  <Paragraph>{recruiter.bio}</Paragraph>
+                  <Paragraph>{alumni.bio}</Paragraph>
 
                   <Divider />
-                  <Title level={4}>Currently Hiring</Title>
-                  <List
-                    itemLayout="vertical"
-                    dataSource={recruiter.hiring}
-                    renderItem={(item, index) => (
-                      <List.Item
-                        extra={
-                          <Button type="primary">Apply Now</Button>
-                        }
-                      >
-                        <List.Item.Meta
-                          title={`${item.role} (${item.level})`}
-                          description={`Team: ${item.team}`}
-                        />
-                        <Paragraph>{item.description}</Paragraph>
-                      </List.Item>
-                    )}
-                  />
-
-                  <Divider />
-                  <Title level={4}>Career History</Title>
+                  <Title level={4}>Experience</Title>
                   <Timeline>
-                    {recruiter.career_history.map((career, index) => (
+                    {alumni.experience.map((exp, index) => (
                       <Timeline.Item key={index}>
-                        <Text strong>{career.title}</Text> at <Text strong>{career.company}</Text>
+                        <Text strong>{exp.title}</Text> at <Text strong>{exp.company}</Text>
                         <br />
-                        <Text type="secondary">{career.duration}</Text>
+                        <Text type="secondary">{exp.duration}</Text>
                         <br />
-                        <Paragraph>{career.description}</Paragraph>
+                        <Paragraph>{exp.description}</Paragraph>
                       </Timeline.Item>
                     ))}
                   </Timeline>
 
                   <Divider />
-                  <Title level={4}>Upcoming Events</Title>
+                  <Title level={4}>Projects</Title>
                   <List
                     itemLayout="horizontal"
-                    dataSource={recruiter.events}
+                    dataSource={alumni.projects}
                     renderItem={(item, index) => (
                       <List.Item>
                         <List.Item.Meta
-                          avatar={<ScheduleOutlined style={{ fontSize: 24 }} />}
+                          avatar={<ProjectOutlined style={{ fontSize: 24 }} />}
                           title={item.name}
-                          description={
-                            <>
-                              <div>{item.date} | {item.location}</div>
-                              <div>{item.description}</div>
-                            </>
-                          }
+                          description={item.description}
                         />
                       </List.Item>
                     )}
                   />
 
                   <Divider />
-                  <Title level={4}>Recruiting Tips</Title>
-                  <Collapse defaultActiveKey={['1']} style={{ marginBottom: "24px" }}>
-                    <Panel header="Tips for Landing Your Dream Job" key="1">
-                      <ul>
-                        {recruiter.tips.map((tip, index) => (
-                          <li key={index}>{tip}</li>
-                        ))}
-                      </ul>
-                    </Panel>
-                  </Collapse>
+                  <Title level={4}>Education</Title>
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={alumni.education}
+                    renderItem={(item, index) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={<BankOutlined style={{ fontSize: 24 }} />}
+                          title={item.degree}
+                          description={`${item.school}, ${item.year}`}
+                        />
+                      </List.Item>
+                    )}
+                  />
                 </Card>
               </Col>
             </Row>
@@ -474,8 +463,8 @@ function RecruiterProfile() {
         </Layout>
       </Layout>
 
-      {/* Email Modal */}
-      <Modal
+       {/* Email Modal */}
+       <Modal
         title="Generated Cold Email"
         open={isEmailModalVisible}
         onOk={() => setIsEmailModalVisible(false)}
@@ -492,7 +481,7 @@ function RecruiterProfile() {
             </Button>
             <Button
               icon={<ReloadOutlined />}
-              onClick={handleGenerateEmail}
+              onClick={handleGenerateCoffeeChat}
               loading={isGenerating}
               style={{ marginRight: '8px' }}
             >
@@ -533,4 +522,4 @@ function RecruiterProfile() {
   );
 }
 
-export default RecruiterProfile;
+export default AlumniProfile;

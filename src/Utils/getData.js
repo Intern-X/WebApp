@@ -6,7 +6,7 @@ class RefreshData {
         const uid = user.uid;
 
         return Promise.all([
-            // company information
+            // companie information
             RequestUtils.get("/allCompanies").then((response) => response.json())
                 .then((data) => {
                     if (data.status === 200) {

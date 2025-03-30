@@ -6,6 +6,7 @@ import {
     registerWithEmailAndPassword,
 } from "../../Firebase";
 // IMAGES
+import publicLogo from "../../assets/images/public.png";
 import { useNavigate } from "react-router";
 import "./LoginView.css";
 import { useEffect, useState } from "react";
@@ -53,6 +54,7 @@ function LoginView(props) {
     return (
         <div className="login">
             <div className="login__container">
+                <img className="coverLogo" src={publicLogo}></img>
                 <Form
                     layout="vertical"
                     name="basic"
@@ -68,7 +70,8 @@ function LoginView(props) {
                     onFinish={login}
                 >
                     <p className="padded-text">
-                        Intern-X is a platform for students to easily reach out to connections and find internships.
+                        Intern-X is a platform for students to build their portfolios through
+                        project-based work.
                     </p>
                     {tab === 1 ?
                         <Form.Item

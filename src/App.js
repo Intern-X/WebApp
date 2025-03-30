@@ -1,38 +1,57 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-import Login from './Authorization/Login';
-import { Provider } from 'react-redux';
-import store from './redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistStore } from 'redux-persist';
-import Dashboard from './Components/Dashboard/Dashboard';
-import AllCompanies from './Components/AllCompanies/AllCompanies';
-import { ConfigProvider, theme } from 'antd';
-import Company from './Components/AllCompanies/Company/Company';
-import StudentProfile from './Components/Profile/StudentProfile';
-import ProjectPage from './Components/Project/ProjectPage';
-import AlumniRecruiters from './Components/AlumniRecruiters/AlumniRecruiters';
-import RecruiterProfile from './Components/AlumniRecruiters/RecruiterProfile';
-import AlumniProfile from './Components/AlumniRecruiters/AlumniProfile';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./Authorization/Login";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import { useEffect, useState } from "react";
+import { auth } from "./Firebase";
+import { UNAUTHORIZED } from "./Utils/UserStates";
+import authContext from "./Components/AuthContext/AuthContext";
+import AllCompanies from "./Components/AllCompanies/AllCompanies";
+import { useSelector } from "react-redux";
+import ProjectPage from "./Components/Project/ProjectPage";
+import Company from "./Components/AllCompanies/Company/Company";
+import StudentProfile from "./Components/Profile/StudentProfile";
+import NotFound from "./Components/NotFound/NotFound";
+import AlumniRecruiters from "./Components/AlumniRecruiters/AlumniRecruiters";
+import AlumniProfile from "./Components/AlumniRecruiters/AlumniProfile";
+import RecruiterProfile from "./Components/AlumniRecruiters/RecruiterProfile";
 function App() {
-  let persistor = persistStore(store);
-  
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: '#786AC9',
 
-            },
-            algorithm: theme.darkAlgorithm
-          }}
+  const { isCompany } = useSelector((state) => state.userInfo);
+
+  const mode = "no";
+
+  if (mode === "production") {
+    console.log = function () {};
+    console.clear();
+  }
+
+  const [userImpl, setUserImpl] = useState(null);
+  const [authImpl, setAuthImpl] = useState(null);
+
+  useEffect(() => {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserImpl(user);
+        setAuthImpl(user);
+      } else {
+        setUserImpl(UNAUTHORIZED);
+        setAuthImpl(UNAUTHORIZED);
+      }
+    });
+  }, []);
+
+
+  return (
+    <>
+      {userImpl != null && userImpl != "unathorized" ? (
+        <authContext.Provider
+          value={{ userImpl, setUserImpl, authImpl, setAuthImpl }}
         >
-          <Router>
+          <BrowserRouter>
             <Routes>
               <Route path="/" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />}/>
+              <Route path="/dashboard" element={!isCompany ? <Dashboard /> : <Company />}/>
               <Route path="/companies" element={<AllCompanies />} />
               <Route path="/companies/:id" element={<Company />} />
               <Route path="/profile/:id" element={<StudentProfile />} />
@@ -40,12 +59,16 @@ function App() {
               <Route path="/alumni-recruiters" element={<AlumniRecruiters />} />
               <Route path="/alumni/:id" element={<AlumniProfile />} />
               <Route path="/recruiters/:id" element={<RecruiterProfile />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
-          </Router>
-        </ConfigProvider>
-      </PersistGate>
-    </Provider>
+          </BrowserRouter>
+        </authContext.Provider>
+      ) : (
+        <div></div>
+      )}
+    </>
   );
 }
+
 
 export default App;

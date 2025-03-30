@@ -1,3 +1,6 @@
+// THIS IS THE OLD FILE
+
+
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
@@ -315,16 +318,23 @@ function Dashboard() {
   // RENDER
   return (
     <>
-        {contextHolder}
+      {contextHolder}
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#786AC9",
+          },
+        }}
+      >
         <Layout className="white">
-            <Navbar tab={"1"} />
-            <Layout>
-                <Layout
-                    style={{
-                        padding: "24px 100px 24px",
-                    }}
-                    className="white"
-                >
+          <Navbar tab={"1"} />
+          <Layout>
+            <Layout
+              style={{
+                padding: "24px 100px 24px",
+              }}
+              className="white"
+            >
               <Content
                 style={{
                   margin: 0,
@@ -340,7 +350,7 @@ function Dashboard() {
                     <h3 style={{ marginBottom: 32, fontWeight: "normal" }}>
                       {"Hello " +
                         (userInfo && userInfo.name ? userInfo.name.split(" ")[0] : "") +
-                        "! Get started on kickstarting your career with Intern-X!"}
+                        "! Get started on kickstarting your career with Proj-X!"}
                     </h3>
                   </Col>
                   <Col
@@ -551,23 +561,28 @@ function Dashboard() {
                       >
                         <Button
                           style={{
-                              marginBottom: 24,
-                              color: userInfo && userInfo.appliedProjects && userInfo.appliedProjects.includes(selectedProject.id) ? "#8c8c8c" : "white",
-                              backgroundColor: userInfo && userInfo.appliedProjects && userInfo.appliedProjects.includes(selectedProject.id) ? "#424242" : "#786AC9",
-                              borderRadius: "12px",
-                              height: "40px",
-                              padding: "8px 16px",
-                              border: userInfo && userInfo.appliedProjects && userInfo.appliedProjects.includes(selectedProject.id) ? "1px solid #595959" : "none"
+                            marginBottom: 24,
+                            color: "white",
+                            backgroundColor: "#786AC9",
+                            borderRadius: "12px",
+
+                            height: "40px",
+                            padding: "8px 16px",
                           }}
                           onClick={() => apply()}
-                          disabled={userInfo && userInfo.appliedProjects ? userInfo.appliedProjects.includes(selectedProject.id) : false}
-                      >
+                          disabled={userInfo && userInfo.appliedProjects
+                            ? userInfo.appliedProjects.includes(
+                                selectedProject.id
+                              ) : false}
+                        >
                           {userInfo && userInfo.appliedProjects
-                              ? userInfo.appliedProjects.includes(selectedProject.id)
-                                  ? "Already Applied"
-                                  : "Apply"
-                              : "Apply"}
-                      </Button>
+                            ? userInfo.appliedProjects.includes(
+                                selectedProject.id
+                              )
+                              ? "Already Applied"
+                              : "Apply"
+                            : "Apply"}
+                        </Button>
                       </span>
                     </div>
                   </Col>
@@ -814,6 +829,7 @@ function Dashboard() {
           confettiOn={confettiOn}
           setConfettiOn={setConfettiOn}
         ></ConfettiMode>
+      </ConfigProvider>
     </>
   );
 }

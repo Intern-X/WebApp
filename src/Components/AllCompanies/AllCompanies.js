@@ -143,15 +143,22 @@ function AllCompanies() {
 
   // RENDER
   return (
-    <Layout className="white">
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: "#786AC9",
+        },
+      }}
+    >
+      <Layout className="white">
         <Navbar tab={"2"} />
         <Layout>
-            <Layout
-                style={{
-                    padding: "24px 80px 24px",
-                }}
-                className="white"
-            >
+          <Layout
+            style={{
+              padding: "24px 80px 24px",
+            }}
+            className="white"
+          >
             <Content
               style={{
                 margin: 0,
@@ -168,7 +175,7 @@ function AllCompanies() {
               >
                 <h1>Companies</h1>
                 <h3 style={{ fontWeight: "normal" }}>
-                  Navigating the job market can be difficult, but InternX
+                  Navigating the job market can be difficult, but Intern-X
                   coordinates with the top companies to deliver high-quality
                   projects to kickstart your career.
                 </h3>
@@ -221,6 +228,7 @@ function AllCompanies() {
           </Layout>
         </Layout>
       </Layout>
+    </ConfigProvider>
   );
 }
 

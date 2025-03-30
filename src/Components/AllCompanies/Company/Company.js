@@ -409,7 +409,7 @@ function Company() {
                     footer={[]}
                 >
                     <p style={{ marginBottom: 20 }}>
-                        Tell us a little bit about yourself to customize your ProjX
+                        Tell us a little bit about yourself to customize your Intern-X
                         experience!
                     </p>
 

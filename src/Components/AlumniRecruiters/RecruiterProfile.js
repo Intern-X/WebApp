@@ -27,12 +27,9 @@ import {
   CalendarOutlined,
   PhoneOutlined,
   EnvironmentOutlined,
-  BankOutlined,
-  TeamOutlined,
-  FileSearchOutlined,
+  ReloadOutlined,
   ScheduleOutlined,
   CopyOutlined,
-  ReloadOutlined,
   SendOutlined
 } from "@ant-design/icons";
 import { Content } from "antd/es/layout/layout.js";
@@ -342,7 +339,7 @@ function RecruiterProfile() {
                           <span style={{ fontWeight: "bold" }}>LinkedIn</span>
                         </div>
                         <span style={{ marginLeft: 8 }}>
-                          <a href={`https://linkedin.com/in/${recruiter.linkedin}`}>{recruiter.linkedin}</a>
+                          <a href={`https://linkedin.com/in/${recruiter.linkedin}`}  target="_blank">{recruiter.linkedin}</a>
                         </span>
                       </div>
                     </div>
@@ -487,28 +484,26 @@ function RecruiterProfile() {
         footer={[
           <div key="left-buttons" style={{ float: 'left' }}>
             <Button
-              icon={<ReloadOutlined />}
-              onClick={handleGenerateEmail}
-              loading={isGenerating}
-              style={{ marginRight: '8px' }}
-              type="primary"
-            >
-              Generate Again
-            </Button>
-
-            <Button
-              icon={<SendOutlined />}
-              onClick={openInEmailClient}
-              type="primary"
-            >
-              Open in Email
-            </Button>
-            <Button
               icon={<CopyOutlined />}
               onClick={copyToClipboard}
               style={{ marginRight: '8px' }}
             >
               Copy to Clipboard
+            </Button>
+            <Button
+              icon={<ReloadOutlined />}
+              onClick={handleGenerateEmail}
+              loading={isGenerating}
+              style={{ marginRight: '8px' }}
+            >
+              Generate Again
+            </Button>
+            <Button
+              icon={<SendOutlined />}
+              onClick={openInEmailClient}
+              type="primary"
+            >
+              Open in Email Client
             </Button>
           </div>,
           <Button key="close" onClick={() => setIsEmailModalVisible(false)}>
