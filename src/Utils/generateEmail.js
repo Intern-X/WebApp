@@ -1,5 +1,6 @@
 import LlamaAI from 'llamaai';
-
+import RecruiterProfile from '../Components/AlumniRecruiters/RecruiterProfile';
+import { useSelector } from "react-redux";
 
 const apiToken = process.env.REACT_APP_LLAMA_API_KEY;
 const llamaAPI = new LlamaAI(apiToken);
