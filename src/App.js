@@ -5,8 +5,9 @@ import { Provider } from 'react-redux';
 import store from './redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
-import Dashboard from './Components/Dashboard/Dashboard'
+import Dashboard from './Components/Dashboard/Dashboard';
 import AllCompanies from './Components/AllCompanies/AllCompanies';
+import { ConfigProvider, theme } from 'antd';
 
 function App() {
   let persistor = persistStore(store);
@@ -14,13 +15,24 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/dashboard" element={<Dashboard />}/>
-            <Route path="/companies" element={<AllCompanies />} />
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#786AC9',
+
+            },
+            algorithm: theme.darkAlgorithm
+          }}
+        >
+          <Router>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />}/>
+              <Route path="/companies" element={<AllCompanies />} />
+              <Route path="/companies/:id" element={<Company />} />
             </Routes>
-        </Router>
+          </Router>
+        </ConfigProvider>
       </PersistGate>
     </Provider>
   );

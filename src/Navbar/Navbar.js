@@ -103,7 +103,7 @@ function Navbar(props) {
             style={{
                 display: "flex",
                 alignItems: "center",
-                backgroundColor: "white",
+                backgroundColor: "#1f1f1f",
             }}
         >
             <div className="demo-logo" />
@@ -126,17 +126,17 @@ function Navbar(props) {
                 style={{ marginRight: "25px" }}
                 onClick={() => setNotifsOpen(true)}
             >
-                <BellOutlined style={{ fontSize: "20px", color: "black" }} />
+                <BellOutlined style={{ fontSize: "20px", color: "white" }} />
             </Button>
             <Button onClick={() => {
                 isCompany ? navigate("/companies/" + userImpl.uid) : navigate("/profile/" + userImpl.uid);
             }} className="nobg">
-                <UserOutlined style={{ fontSize: "20px", color: "black", marginRight: "25px" }} />
+                <UserOutlined style={{ fontSize: "20px", color: "white", marginRight: "25px" }} />
             </Button>
             
             </>}
             <Button onClick={() => handleLogout()} className="nobg">
-                <LogoutOutlined style={{ fontSize: "20px", color: "black", }} />
+                <LogoutOutlined style={{ fontSize: "20px", color: "white", }} />
             </Button>
             <Modal title="Notifications" open={notifsOpen} onOk={() => setNotifsOpen(false)} onCancel={() => setNotifsOpen(false)}>
                 <p>You have no notifications. Have a beautiful day!</p>

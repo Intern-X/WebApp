@@ -1,5 +1,5 @@
 .white {
-    background-color: white!important;
+    background-color: #141414!important;
 }
 
 .card1 {
@@ -17,6 +17,6 @@
 }
 
 .ant-list-item.project-list-item:hover {
-    background-color: #f9f9f9;
+    background-color: #303030;
     border-radius: 4px;
 }
